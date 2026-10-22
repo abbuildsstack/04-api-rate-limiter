@@ -11,6 +11,39 @@ A compact FastAPI service demonstrating configurable rate limiting with fixed-wi
 - Redis for shared state; an in-memory adapter is used by unit tests and can be used for single-process demos.
 - Dashboard, pytest suite, Locust load test, Docker Compose, and GitHub Actions CI.
 
+## Project structure
+
+```
+04-api-rate-limiter/
+├── README.md                  # this file
+├── docs/project-brief.md      # original assignment / project brief
+├── .env.example               # template config (copy to .env)   [config-data-management]
+├── Dockerfile                 #                                   [integration-deployment]
+├── docker-compose.yml         #                                   [integration-deployment]
+├── .github/workflows/ci.yml   # pytest + ruff on pushes/PRs to main [integration-deployment]
+├── backend/
+│   ├── requirements.txt       # dev deps (tests, ruff, locust)    [integration-deployment]
+│   ├── requirements-prod.txt  # runtime deps only (used by Docker)[integration-deployment]
+│   ├── pyproject.toml         # pytest + ruff config              [testing-qa]
+│   ├── app/
+│   │   ├── main.py            # app factory, lifecycle, wiring    [middleware]
+│   │   ├── middleware.py      # client ID + rate-limit HTTP layer [middleware]
+│   │   ├── config.py          # validated Settings (env vars)     [config-data-management]
+│   │   ├── limiter/
+│   │   │   ├── algorithms.py  # Redis Lua scripts (3 strategies)  [rate-limit-algorithm]
+│   │   │   ├── limiter.py     # Rule + RateLimiter policy         [rate-limit-algorithm]
+│   │   │   └── storage.py     # Redis + in-memory adapters        [config-data-management]
+│   │   └── routers/
+│   │       ├── api.py         # GET /api/data, /api/stats         [middleware]
+│   │       └── admin.py       # bearer-protected /admin rules API [middleware]
+│   └── tests/                 # pytest suite                      [testing-qa]
+├── frontend/                  # demo dashboard (HTML/CSS/JS)      [integration-deployment]
+└── load/locustfile.py         # Locust load test                  [integration-deployment]
+```
+
+`[branch]` shows which `feature/*` branch owns each file. Every branch carries only
+its own files at these final paths, so the branches merge into `main` with no conflicts.
+
 ## Quick start with Docker
 
 1. Install Docker Engine and the Docker Compose plugin.

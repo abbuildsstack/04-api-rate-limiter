@@ -1,8 +1,9 @@
 import pytest
 from fastapi.testclient import TestClient
-from app.main import create_app
+
 from app.config import Settings
 from app.limiter.storage import InMemoryStorage
+from app.main import create_app
 
 
 @pytest.fixture

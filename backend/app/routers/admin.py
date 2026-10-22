@@ -1,6 +1,7 @@
 """Token-protected administrative endpoints."""
 import hmac
 from typing import Literal
+
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from pydantic import BaseModel, Field
 
