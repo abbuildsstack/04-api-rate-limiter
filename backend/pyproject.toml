@@ -1,0 +1,13 @@
+# Tooling config for the backend (owned by testing/QA).
+# Run from this folder:  python -m pytest -q   |   python -m ruff check app tests
+
+[tool.pytest.ini_options]
+# Make `import app...` resolve to backend/app regardless of how pytest is launched.
+pythonpath = ["."]
+testpaths = ["tests"]
+# tests/test_algorithms.py uses @pytest.mark.asyncio explicitly.
+asyncio_mode = "strict"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 140
